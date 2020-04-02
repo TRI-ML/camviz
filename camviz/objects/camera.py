@@ -1,6 +1,6 @@
 
-from graphics.objects.object import *
-from graphics.utils import *
+from camviz.objects.object import *
+from camviz.utils import *
 
 
 class Camera(Object):

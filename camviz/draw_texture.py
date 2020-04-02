@@ -5,13 +5,13 @@ from pygame.locals import *
 from OpenGL.GL import *
 from PIL import Image
 
-from graphics.draw_input import DrawInput
-from graphics.screen2Dimage import Screen2Dimage
-from graphics.texture import Texture
-from graphics.buffer import Buffer
-from graphics.opengl_colors import *
-from graphics.opengl_shapes import *
-from graphics.utils import *
+from camviz.draw_input import DrawInput
+from camviz.screen2Dimage import Screen2Dimage
+from camviz.texture import Texture
+from camviz.buffer import Buffer
+from camviz.opengl_colors import *
+from camviz.opengl_shapes import *
+from camviz.utils import *
 
 
 class DrawTexture:

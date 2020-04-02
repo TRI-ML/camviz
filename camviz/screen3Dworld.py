@@ -3,8 +3,8 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from graphics.screen import Screen
-from graphics.objects.pose import Pose
+from camviz.screen import Screen
+from camviz.objects.pose import Pose
 
 
 class Screen3Dworld(Screen):

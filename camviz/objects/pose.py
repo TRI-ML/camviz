@@ -1,7 +1,7 @@
 
 from copy import deepcopy
-from graphics.objects.quaternion import Quaternion
-from graphics.utils import *
+from camviz.objects.quaternion import Quaternion
+from camviz.utils import *
 
 
 def rot2quat(R):

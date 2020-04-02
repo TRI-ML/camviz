@@ -4,15 +4,15 @@ from pygame.locals import *
 from PIL import Image, ImageOps
 import time
 
-from graphics.draw_input import DrawInput
-from graphics.draw_texture import DrawTexture
-from graphics.draw_buffer import DrawBuffer
+from camviz.draw_input import DrawInput
+from camviz.draw_texture import DrawTexture
+from camviz.draw_buffer import DrawBuffer
 
-from graphics.screen2Dimage import Screen2Dimage
-from graphics.screen3Dworld import Screen3Dworld
+from camviz.screen2Dimage import Screen2Dimage
+from camviz.screen3Dworld import Screen3Dworld
 
-from graphics.opengl_shapes import *
-from graphics.utils import *
+from camviz.opengl_shapes import *
+from camviz.utils import *
 
 
 class Draw(DrawInput, DrawTexture, DrawBuffer):

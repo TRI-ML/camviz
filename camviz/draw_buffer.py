@@ -1,7 +1,7 @@
 
-from graphics.buffer import Buffer
-from graphics.opengl_shapes import *
-from graphics.utils import *
+from camviz.buffer import Buffer
+from camviz.opengl_shapes import *
+from camviz.utils import *
 
 
 class DrawBuffer:

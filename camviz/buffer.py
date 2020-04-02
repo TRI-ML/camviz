@@ -1,6 +1,6 @@
 
 from OpenGL.GL import *
-from graphics.utils import *
+from camviz.utils import *
 
 
 class Buffer:

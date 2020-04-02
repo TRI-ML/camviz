@@ -3,7 +3,7 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from graphics.screen import Screen
+from camviz.screen import Screen
 
 
 class Screen2Dimage(Screen):

@@ -1,7 +1,7 @@
 
 import numpy as np
-from graphics.utils import numpyf, add_list
-from graphics.opengl_colors import *
+from camviz.utils import numpyf, add_list
+from camviz.opengl_colors import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *

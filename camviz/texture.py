@@ -3,7 +3,7 @@ import cv2
 import pygame
 from OpenGL.GL import *
 import numpy as np
-from graphics.utils import *
+from camviz.utils import *
 
 
 def load(image):

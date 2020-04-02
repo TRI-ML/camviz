@@ -1,6 +1,6 @@
 
 from OpenGL.GL import *
-from graphics.objects.pose import Pose
+from camviz.objects.pose import Pose
 
 
 class Object:
