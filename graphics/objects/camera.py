@@ -42,11 +42,11 @@ class Camera(Object):
                 depth = depth.reshape(-1, 1)
         return (uv @ self.iK) * depth
 
-    def c2i(self, xyz, filter=False, return_z=False):
+    def c2i(self, xyz, filter=False, padding=0, return_z=False):
         uv = (xyz / xyz[:, 2:] @ self.K)[:, :2]
         if filter:
-            idx = (uv[:, 0] > 0) & (uv[:, 0] < self.w) & \
-                  (uv[:, 1] > 0) & (uv[:, 1] < self.h) & (xyz[:, 2] > 0)
+            idx = (uv[:, 0] > -padding) & (uv[:, 0] < self.w + padding) & \
+                  (uv[:, 1] > -padding) & (uv[:, 1] < self.h + padding) & (xyz[:, 2] > 0)
             if return_z:
                 return uv[idx], xyz[idx, 2:], idx
             else:
@@ -70,8 +70,9 @@ class Camera(Object):
     def i2w(self, uv, depth=1.0):
         return self.c2w(self.i2c(uv, depth))
 
-    def w2i(self, xyz, filter=False, return_z=False):
-        return self.c2i(self.w2c(xyz), filter=filter, return_z=return_z)
+    def w2i(self, xyz, filter=False, padding=0, return_z=False):
+        return self.c2i(self.w2c(xyz), filter=filter,
+                        padding=padding, return_z=return_z)
 
     def draw(self, draw, tex=None, axes=True, color='gra'):
         draw.image(tex, verts=self.v[:4])
