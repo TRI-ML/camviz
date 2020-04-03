@@ -1,4 +1,16 @@
 
+"""
+BBoxes Visualizer Demo (works with Parallel Domain)
+How to Use:
+
+1) Clone the DGP library
+git clone https://github.com/TRI-ML/dgp.git
+export PYTHONPATH=/path/to/dgp:$PYTHONPATH
+
+2) Run script
+python3 demos/visualizer_bboxes.py --json /path/to/scene_dataset.json
+"""
+
 import argparse
 from dgp.datasets.pd_dataset import ParallelDomainSceneDataset
 from camviz.visualizers.bboxes import CamvizBBoxes
