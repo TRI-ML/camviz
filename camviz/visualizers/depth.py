@@ -117,13 +117,17 @@ def prep_projection(draw, buffer, key, i):
 
 
 class CamvizDepth:
-    def __init__(self, num_cams=6, wh=(1936, 1216), scale=3):
+    def __init__(self, num_cams=6, wh=(1936, 1216), scale=3,
+                 render_folder=None, automatic_render=False):
+
+        self.render_folder = render_folder
+        self.automatic_render = automatic_render
 
         self.num_cams = num_cams
         self.draw = Draw((wh[0] * 4 // scale, wh[1] * 3 // scale))
 
         self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lid',
-                             pose=(-15.87691, -0.34308, 4.47827, 0.46147, 0.55535, -0.53210, 0.44215))
+                             pose=(-35.13999, 1.00936, 19.00621, 0.37096, 0.60595, -0.60017, 0.36742))
         self.draw.add2Dimage('cam_0', (0.00, 0.00, 0.25, 0.33), wh)
         self.draw.add2Dimage('cam_1', (0.00, 0.33, 0.25, 0.67), wh)
         self.draw.add2Dimage('cam_2', (0.00, 0.67, 0.25, 1.00), wh)
@@ -150,7 +154,7 @@ class CamvizDepth:
         change = True
         nmin, nmax = 0, len(dataset) - 1
 
-        show_pcl, show_img, show_proj = 0, 0, 0
+        show_pcl, show_img, show_proj = 1, 1, 0
         keys_proj = {0: 'proj', 1: 'cross'}
 
         while self.draw.input():
@@ -205,4 +209,12 @@ class CamvizDepth:
                     self.draw['wld'].size(2).points('pcl_%d' % i, 'rgb_%d' % i)
 
             self.draw.update(30)
+
+            if self.automatic_render:
+                if self.render_folder is not None:
+                    self.draw.save('{}/%06d.png'.format(n))
+                change = True
+                n += 1
+                continue
+
 
