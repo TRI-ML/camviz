@@ -228,7 +228,7 @@ class CamvizDepth:
 
             if self.automatic_render:
                 if self.render_folder is not None:
-                    self.draw.save('{}/%06d.png'.format(n))
+                    self.draw.save('%s/%06d.png' % (self.render_folder, n))
                 change = True
                 n += 1
                 continue
