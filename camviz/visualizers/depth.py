@@ -109,19 +109,32 @@ def parse_sample(sample):
     return prep_sample
 
 
-def prep_projection(draw, buffer, key, i):
+def prep_projection(draw, buffer, key, i, alpha=0.0):
+    rgb = key[i][:, 3:] / 255
+    jet = cmapJET(key[i][:, 2], range=(0.1, 100), exp=0.75)
     draw.updBufferf('%s_%d' % (buffer, i), key[i][:, :2])
-    draw.updBufferf('%s_rgb_%d' % (buffer, i), key[i][:, 3:] / 255)
-    draw.updBufferf('%s_z_%d' % (buffer, i), cmapJET(key[i][:, 2], range=(0.1, 100), exp=0.75))
+    draw.updBufferf('%s_rgb_%d' % (buffer, i), rgb)
+    draw.updBufferf('%s_z_%d' % (buffer, i), (alpha * rgb + (1 - alpha) * jet))
     return draw
+
+
+def draw_border(draw, i, wh, width=9, pad=5):
+    draw['cam_%d' % i].color(camera_colors[i]).width(width).loop(np.array([
+        [pad        , pad        ],
+        [pad        , wh[1] - pad],
+        [wh[0] - pad, wh[1] - pad],
+        [wh[0] - pad, pad        ]
+    ]))
 
 
 class CamvizDepth:
     def __init__(self, num_cams=6, wh=(1936, 1216), scale=3,
-                 render_folder=None, automatic_render=False):
+                 render_folder=None, automatic_render=False, alpha=0.0):
 
         self.render_folder = render_folder
         self.automatic_render = automatic_render
+        self.alpha = alpha
+        self.wh = wh
 
         self.num_cams = num_cams
         self.draw = Draw((wh[0] * 4 // scale, wh[1] * 3 // scale))
@@ -186,8 +199,10 @@ class CamvizDepth:
                     self.draw.tex('cam_%d' % i).update(camera['rgb'][i])
                     self.draw.updBufferf('pcl_%d' % i, camera['point_cloud'][i][:, :3])
                     self.draw.updBufferf('rgb_%d' % i, camera['point_cloud'][i][:, 3:] / 255)
-                    self.draw = prep_projection(self.draw, 'proj', camera['projection'], i)
-                    self.draw = prep_projection(self.draw, 'cross', camera['cross_projection'], i)
+                    self.draw = prep_projection(self.draw, 'proj', camera['projection'], i,
+                                                alpha=self.alpha)
+                    self.draw = prep_projection(self.draw, 'cross', camera['cross_projection'], i,
+                                                alpha=self.alpha)
 
             self.draw.clear()
             for i in range(self.num_cams):
@@ -207,6 +222,7 @@ class CamvizDepth:
                     self.draw['wld'].size(2).color(camera_colors[i]).points('pcl_%d' % i)
                 elif show_pcl == 2:
                     self.draw['wld'].size(2).points('pcl_%d' % i, 'rgb_%d' % i)
+                draw_border(self.draw, i, self.wh, pad=5, width=9)
 
             self.draw.update(30)
 
