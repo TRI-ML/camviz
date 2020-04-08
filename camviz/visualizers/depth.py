@@ -222,7 +222,7 @@ class CamvizDepth:
                     self.draw['wld'].size(2).color(camera_colors[i]).points('pcl_%d' % i)
                 elif show_pcl == 2:
                     self.draw['wld'].size(2).points('pcl_%d' % i, 'rgb_%d' % i)
-                draw_border(self.draw, i, self.wh, pad=5, width=9)
+                draw_border(self.draw, i, self.wh, pad=10, width=10)
 
             self.draw.update(30)
 
