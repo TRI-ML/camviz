@@ -9,11 +9,11 @@ from camviz.objects.camera import Camera
 
 class_color = {
     0: 'blu',
-    1: 'yel',
-    2: 'red',
-    3: 'cya',
-    4: 'mag',
-    5: 'gre',
+    1: 'mag',
+    2: 'gre',
+    3: 'red',
+    4: 'yel',
+    5: 'cya',
 }
 
 
@@ -127,7 +127,7 @@ class CamvizBBoxes:
         # Create window and different screens
         self.draw = Draw(window_size)
         self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lid',
-                             pose=(-25.33070, 0.11160, 12.46942, 0.44218, 0.54703, -0.55279, 0.44684))
+                             pose=(-74.37884, 4.35606, 53.99322, 0.29453, 0.64556, -0.64107, 0.29248))
         self.draw.add2Dimage('img0', (0.00, 0.00, 0.25, 0.33), wh)
         self.draw.add2Dimage('img1', (0.25, 0.00, 0.50, 0.33), wh)
         self.draw.add2Dimage('img2', (0.00, 0.33, 0.25, 0.67), wh)
@@ -163,8 +163,13 @@ class CamvizBBoxes:
             if change:
                 change = False
                 sample = parse_sample(dataset[n])
-                self.draw.updBufferf('lidar_xyz', sample['lidar']['point_cloud'])
-                self.draw.updBufferf('lidar_hgt', cmapJET(sample['lidar']['point_cloud'][:, 2]))
+
+                lidar_xyz = sample['lidar']['point_cloud']
+                self.draw.updBufferf('lidar_xyz', lidar_xyz)
+
+                lidar_hgt = cmapJET(sample['lidar']['point_cloud'][:, 2], range=(-2, 10))
+                self.draw.updBufferf('lidar_hgt', lidar_hgt)
+
                 for i, inside_points in enumerate(sample['lidar']['inside_points']):
                     self.draw.updBufferf('lidar_inside_%d' % i, inside_points)
                 for i in range(self.num_cameras):
