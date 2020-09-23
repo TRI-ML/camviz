@@ -1,17 +1,12 @@
 
-import pygame
-import numpy as np
-from pygame.locals import *
-from OpenGL.GL import *
-from PIL import Image
+from OpenGL.GL import \
+    glTexCoord2f, glBegin, glEnd, glVertex2fv, glVertex3fv, \
+    GL_QUADS
 
-from camviz.draw_input import DrawInput
-from camviz.screen2Dimage import Screen2Dimage
 from camviz.texture import Texture
-from camviz.buffer import Buffer
-from camviz.opengl_colors import *
-from camviz.opengl_shapes import *
-from camviz.utils import *
+from camviz.opengl.opengl_colors import White
+from camviz.utils.types import is_tup, is_lst
+from camviz.utils.utils import labelrc, numpyf
 
 
 class DrawTexture:
@@ -24,6 +19,9 @@ class DrawTexture:
                 self.addTexture(name[i], data[i] if is_lst(data) else data)
         else:
             self.textures[name] = Texture(data)
+
+    def updTexture(self, name, data):
+        self.textures[name].update(data)
 
     def image(self, name, data=None, verts=None, fit=False):
         if name is None:
@@ -38,13 +36,16 @@ class DrawTexture:
                     [    0.0   , tex.wh[1]], [   0.0   ,    0.0   ]]
         verts = numpyf(verts)
 
+        White()
+        tex.bind()
+        glBegin(GL_QUADS)
         glVertex = glVertex2fv if len(verts[0]) == 2 else glVertex3fv
-        White(); tex.bind(); glBegin(GL_QUADS)
         glTexCoord2f(1.0, 1.0); glVertex(verts[0])
         glTexCoord2f(1.0, 0.0); glVertex(verts[1])
         glTexCoord2f(0.0, 0.0); glVertex(verts[2])
         glTexCoord2f(0.0, 1.0); glVertex(verts[3])
-        glEnd(); tex.unbind()
+        glEnd()
+        tex.unbind()
 
         return self
 

@@ -1,23 +1,31 @@
 
 import numpy as np
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from OpenGL.GL import glMatrixMode, glEnable, glLoadIdentity, glMultMatrixf
+from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
+from OpenGL.GLU import gluPerspective, gluLookAt
 
-from camviz.screen import Screen
+from camviz.screen.screen import Screen
 from camviz.objects.pose import Pose
 
 
 class Screen3Dworld(Screen):
 
-    def __init__(self, luwh, wh, K, nf, ref='cam'):
-        super(Screen3Dworld, self).__init__(luwh, '3D_WORLD')
-        if nf is None: nf = (0.01, 100.0)
+    def __init__(self, luwh, wh=None, K=None, nf=(0.01, 100.0),
+                 background='bla', pose=None, ref='cam'):
+        super().__init__(luwh, '3D_WORLD')
         self.wh, self.K, self.nf = wh, K, nf
         self.viewer = self.origin = self.P = None
+        self.background = background
         self.ref = ref
 
         self.start()
         self.prepare()
+
+        if ref == 'lidar':
+            self.viewer.rotateY(-90).rotateZ(90)
+        if pose is not None:
+            self.viewer.setPose(pose)
+            self.saveViewer()
 
     def start(self):
         self.viewer = Pose()
@@ -32,17 +40,27 @@ class Screen3Dworld(Screen):
 
         glEnable(GL_DEPTH_TEST)
 
-        if self.P is not None: glMultMatrixf( self.P )
-        else: gluPerspective(45, (self.luwh[2] / self.luwh[3]), self.nf[0], self.nf[1])
+        if self.P is not None:
+            glMultMatrixf(self.P)
+        else:
+            gluPerspective(45, self.luwh[2] / self.luwh[3],
+                           self.nf[0], self.nf[1])
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
         T = self.viewer.T
-        gluLookAt(T[0, 3] , T[1, 3], T[2, 3],
-                 (T[0, 3] + T[0, 2]),
-                 (T[1, 3] + T[1, 2]),
-                 (T[2, 3] + T[2, 2]), - T[0, 1], - T[1, 1], - T[2, 1])
+        gluLookAt(
+            T[0, 3],
+            T[1, 3],
+            T[2, 3],
+            T[0, 3] + T[0, 2],
+            T[1, 3] + T[1, 2],
+            T[2, 3] + T[2, 2],
+            - T[0, 1],
+            - T[1, 1],
+            - T[2, 1],
+        )
 
     def calibrate(self):
 

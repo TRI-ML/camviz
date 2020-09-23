@@ -1,20 +1,20 @@
 
-import numpy as np
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from OpenGL.GL import glMatrixMode, glLoadIdentity, glDisable
+from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
+from OpenGL.GLU import gluOrtho2D
 
-from camviz.screen import Screen
+from camviz.screen.screen import Screen
 
 
 class Screen2Dimage(Screen):
 
     def __init__(self, luwh, res):
-        super(Screen2Dimage, self).__init__(luwh, '2D_IMAGE')
-        if res is None: res = (self.luwh[2], self.luwh[3])
-
+        super().__init__(luwh, '2D_IMAGE')
+        if res is None:
+            res = (self.luwh[2], self.luwh[3])
         self.setRes(res)
         self.orig_res = list(self.res)
-        self.prepare()
+        self.background = 'whi'
 
     def setRes(self, res):
         self.res = [0, 0, res[0], res[1]]

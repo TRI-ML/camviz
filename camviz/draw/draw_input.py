@@ -10,9 +10,44 @@ class DrawInput:
         self.RCTRL = self.LCTRL = self.RALT = self.LALT = self.RSHIFT = self.LSHIFT = False
         self.SPACE = self.RETURN = False
 
+        self.KEY_S = False
+
+        self.KEY_0 = self.KEY_1 = self.KEY_2 = self.KEY_3 = self.KEY_4 = self.KEY_5 = \
+            self.KEY_6 = self.KEY_7 = self.KEY_8 = self.KEY_0 = False
+
         self.mouse_pos = self.motion_type = None
         self.tmp_screen, self.tmp_focus = None, False
         self.mouse_down = False
+
+    def change_keys(self, key, bool):
+
+        if key == pygame.K_UP:     self.UP = bool
+        if key == pygame.K_DOWN:   self.DOWN = bool
+        if key == pygame.K_LEFT:   self.LEFT = bool
+        if key == pygame.K_RIGHT:  self.RIGHT = bool
+
+        if key == pygame.K_RCTRL:  self.RCTRL = bool
+        if key == pygame.K_LCTRL:  self.LCTRL = bool
+        if key == pygame.K_RALT:   self.RALT = bool
+        if key == pygame.K_LALT:   self.LALT = bool
+        if key == pygame.K_RSHIFT: self.RSHIFT = bool
+        if key == pygame.K_LSHIFT: self.LSHIFT = bool
+
+        if key == pygame.K_SPACE:  self.SPACE = bool
+        if key == pygame.K_RETURN: self.RETURN = bool
+
+        if key == pygame.K_s: self.KEY_S = bool
+
+        if key == pygame.K_0: self.KEY_0 = bool
+        if key == pygame.K_1: self.KEY_1 = bool
+        if key == pygame.K_2: self.KEY_2 = bool
+        if key == pygame.K_3: self.KEY_3 = bool
+        if key == pygame.K_4: self.KEY_4 = bool
+        if key == pygame.K_5: self.KEY_5 = bool
+        if key == pygame.K_6: self.KEY_6 = bool
+        if key == pygame.K_7: self.KEY_7 = bool
+        if key == pygame.K_8: self.KEY_8 = bool
+        if key == pygame.K_9: self.KEY_9 = bool
 
     def input(self):
 
@@ -42,33 +77,11 @@ class DrawInput:
                     print('(%7.5f, %7.5f, %7.5f, %1.5f, %1.5f, %1.5f, %1.5f)' %
                           self.currScreen().viewer.current7())
 
-                if event.key == pygame.K_UP:     self.UP     = True
-                if event.key == pygame.K_DOWN:   self.DOWN   = True
-                if event.key == pygame.K_LEFT:   self.LEFT   = True
-                if event.key == pygame.K_RIGHT:  self.RIGHT  = True
-                if event.key == pygame.K_RCTRL:  self.RCTRL  = True
-                if event.key == pygame.K_LCTRL:  self.LCTRL  = True
-                if event.key == pygame.K_RALT:   self.RALT   = True
-                if event.key == pygame.K_LALT:   self.LALT   = True
-                if event.key == pygame.K_RSHIFT: self.RSHIFT = True
-                if event.key == pygame.K_LSHIFT: self.LSHIFT = True
-                if event.key == pygame.K_SPACE:  self.SPACE  = True
-                if event.key == pygame.K_RETURN: self.RETURN = True
+                self.change_keys(event.key, True)
 
             if event.type == pygame.KEYUP:
 
-                if event.key == pygame.K_UP:     self.UP     = False
-                if event.key == pygame.K_DOWN:   self.DOWN   = False
-                if event.key == pygame.K_LEFT:   self.LEFT   = False
-                if event.key == pygame.K_RIGHT:  self.RIGHT  = False
-                if event.key == pygame.K_RCTRL:  self.RCTRL  = False
-                if event.key == pygame.K_LCTRL:  self.LCTRL  = False
-                if event.key == pygame.K_RALT:   self.RALT   = False
-                if event.key == pygame.K_LALT:   self.LALT   = False
-                if event.key == pygame.K_RSHIFT: self.RSHIFT = False
-                if event.key == pygame.K_LSHIFT: self.LSHIFT = False
-                if event.key == pygame.K_SPACE:  self.SPACE  = False
-                if event.key == pygame.K_RETURN: self.RETURN = False
+                self.change_keys(event.key, False)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.mouse_down = True
@@ -138,7 +151,7 @@ class DrawInput:
                         if screen.ref == 'cam':
                             screen.viewer.rotateX( - dY * mang )
                             screen.viewer.rotateJ( + dX * mang )
-                        elif screen.ref == 'lid':
+                        elif screen.ref == 'lidar':
                             screen.viewer.rotateX( - dY * mang )
                             screen.viewer.rotateK( - dX * mang )
 

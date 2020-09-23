@@ -1,6 +1,10 @@
 
-from OpenGL.GL import *
-from camviz.utils import *
+import numpy as np
+from OpenGL.GL import \
+    glGenBuffers, glBindBuffer, glBufferData, glBufferSubData, glClearBufferfi, \
+    GL_ARRAY_BUFFER, GL_STATIC_DRAW
+from camviz.utils.types import is_tup, is_lst, is_tct
+from camviz.utils.utils import numpyf, cmapJET
 
 
 class Buffer:
@@ -52,6 +56,9 @@ class Buffer:
             glBufferSubData(GL_ARRAY_BUFFER, 0, self.size, data.astype(self.dtype))
             glBindBuffer(GL_ARRAY_BUFFER, 0)
 
+    def clear(self):
+        self.n = 0
+
     def updateJET(self, data):
         self.update(cmapJET(data))
 
@@ -60,9 +67,9 @@ class Buffer:
 #         super(BufferData, self).__init__(data, np.float32, GL_FLOAT)
 #
 #
-# class BufferIDX(Buffer):
+# class bufferIDX(Buffer):
 #     def __init__(self, data):
-#         super(BufferIDX, self).__init__(data, np.uint32, GL_UNSIGNED_INT)
+#         super(bufferIDX, self).__init__(data, np.uint32, GL_UNSIGNED_INT)
 #
 #
 # class BufferData2(BufferData):

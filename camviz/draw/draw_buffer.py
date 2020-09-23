@@ -1,10 +1,20 @@
 
+import numpy as np
+
+from OpenGL.GL import glEnableClientState, glDisableClientState, \
+    glPolygonMode, glVertexPointer, glBindBuffer, glColorPointer, \
+    glDrawArrays, glDrawElements, glBegin, glEnd, glVertex2fv, glVertex3fv, \
+    GL_ARRAY_BUFFER, GL_FILL, GL_ELEMENT_ARRAY_BUFFER, \
+    GL_FLOAT, GL_UNSIGNED_INT, GL_POINTS, GL_FRONT_AND_BACK, GL_COLOR_ARRAY, \
+    GL_VERTEX_ARRAY, GL_LINE, GL_LINES, GL_LINE_LOOP, GL_LINE_STRIP, GL_QUADS, GL_TRIANGLES
+
 from camviz.buffer import Buffer
-from camviz.opengl_shapes import *
-from camviz.utils import *
+from camviz.utils.types import is_lst, is_str
+from camviz.utils.utils import grid_idx, cmapJET
+from camviz.opengl.opengl_shapes import drawConnects, drawMatches, drawAxis, drawEllipse
 
 
-class DrawBuffer:
+class drawBuffer:
 
     def addBuffer(self, name, data, dtype, gltype):
         if is_lst(name):
@@ -25,7 +35,7 @@ class DrawBuffer:
     def addBuffer3f(self, name, data=0):
         self.addBuffer(name, (data, 3), np.float32, GL_FLOAT)
 
-    def addBufferIDX(self, name, data=0):
+    def addbufferIDX(self, name, data=0):
         self.addBufferu(name, grid_idx(data))
 
     def addBufferJET(self, name, data=0):
@@ -37,9 +47,12 @@ class DrawBuffer:
     def updBufferf(self, name, data):
         self.buffers[name].update(data)
 
+    def clrBuffer(self, name):
+        self.buffers[name].clear()
+
     def points(self, *args, **kwargs): return self._drawSomething(GL_POINTS, *args, **kwargs)
     def lines( self, *args, **kwargs): return self._drawSomething(GL_LINES, *args, **kwargs)
-    def strip( self, *args, **kwargs): return self._drawSomething(GL_LINE_STRIP, *args, **kwargs)
+    def strips(self, *args, **kwargs): return self._drawSomething(GL_LINE_STRIP, *args, **kwargs)
     def loop(  self, *args, **kwargs): return self._drawSomething(GL_LINE_LOOP, *args, **kwargs)
     def quads( self, *args, **kwargs): return self._drawSomething(GL_QUADS, *args, **kwargs)
     def tris(  self, *args, **kwargs): return self._drawSomething(GL_TRIANGLES, *args, **kwargs)
@@ -114,4 +127,3 @@ class DrawBuffer:
         glEnd()
 
         return self
-

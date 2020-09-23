@@ -1,6 +1,6 @@
 
 from camviz.objects.object import *
-from camviz.utils import *
+from camviz.utils.utils import *
 
 
 class Pointcloud(Object):
@@ -12,13 +12,6 @@ class Pointcloud(Object):
             self.pts = 'pts'
         else:
             self.pts = pts
-
-
-    @property
-    def pos(self): return self.T()[:3, 3]
-
-    @property
-    def rot(self): return self.T()[:3, :3]
 
     def draw(self, draw, size=1, color='whi'):
         draw.color(color).size(size).points(self.pts)

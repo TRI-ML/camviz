@@ -1,9 +1,14 @@
 
 import cv2
 import pygame
-from OpenGL.GL import *
 import numpy as np
-from camviz.utils import *
+
+from OpenGL.GL import \
+    glEnable, glDisable, glTexParameterf, \
+    glBindTexture, glGenTextures, glTexImage2D, glTexSubImage2D, \
+    GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_MAG_FILTER, \
+    GL_TEXTURE_MIN_FILTER, GL_REPEAT, GL_NEAREST, GL_RGB, GL_RGBA, GL_UNSIGNED_BYTE
+from camviz.utils.types import is_str, is_tct, is_npy, is_tup
 
 
 def load(image):
