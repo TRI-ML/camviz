@@ -1,37 +1,22 @@
 
-import math
 import numpy as np
-import torch as tc
 from matplotlib.cm import get_cmap
-
-
-def is_npy(data): return isinstance(data, np.ndarray)
-def is_tct(data): return type(data) == tc.Tensor
-def is_tup(data): return isinstance(data, tuple)
-def is_lst(data): return isinstance(data, list)
-def is_str(data): return isinstance(data, str)
-def is_int(data): return isinstance(data, int)
-
-def unitX(m=1.0): return np.array((m, 0, 0))
-def unitY(m=1.0): return np.array((0, m, 0))
-def unitZ(m=1.0): return np.array((0, 0, m))
-
-def transpose(data): return data.T
-def invert(data): return np.linalg.inv(data)
+from camviz.utils.types import is_npy, is_tct
 
 def add_row0(npy): return np.vstack([npy, np.zeros((1, npy.shape[1]))])
 def add_col1(npy): return np.hstack([npy, np.ones((npy.shape[0], 1))])
 
 def flatten(lst): return [l for ls in lst for l in ls]
 
+
 def change_coords(xyz1):
     xyz2 = xyz1[:, [0, 2, 1]]
     xyz2[:, 1] *= -1
     return xyz2
 
+
 def numpyf(data):
-    if is_npy(data): return data
-    else: return np.array(data, dtype=np.float32)
+    return data if is_npy(data) else np.array(data, dtype=np.float32)
 
 
 def labelrc(tup):
@@ -56,10 +41,10 @@ def cmapJET(data, range=None, exp=1.0):
             data = data.reshape(-1)
         # data = - data
         if range is None:
-            data = data - np.min(data)
+            data = data.copy() - np.min(data)
             data = data / (np.max(data) + 1e-6)
         else:
-            data = (data - range[0]) / range[1]
+            data = (data - range[0]) / (range[1] - range[0])
             data = np.maximum(np.minimum(data, 1.0), 0.0)
 
         if exp != 1.0:

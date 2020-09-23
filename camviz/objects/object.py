@@ -7,7 +7,7 @@ class Object:
 
     def __init__(self, scale=1.0, pose=None):
         self.scale = scale
-        self.pose = pose.copy() if isinstance(pose, Pose) else Pose(pose)
+        self.pose = pose if isinstance(pose, Pose) else Pose(pose)
 
     @property
     def t(self): return self.pose.t

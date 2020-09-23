@@ -1,7 +1,11 @@
 
 from copy import deepcopy
+
+import numpy as np
+
 from camviz.objects.quaternion import Quaternion
-from camviz.utils import *
+from camviz.utils.geometry import unitX, unitY, unitZ
+from camviz.utils.utils import numpyf, add_col1
 
 
 def rot2quat(R):
@@ -23,7 +27,7 @@ class Pose:
             self.reset()
 
     def copy(self):
-        return deepcopy( self )
+        return deepcopy(self)
 
     @property
     def t(self):
@@ -53,7 +57,7 @@ class Pose:
         return Pose(Tinv)
 
     @property
-    def iT(self):
+    def Tinv(self):
         return self.inv.T
 
     def translateX(self, m):
@@ -132,21 +136,3 @@ class Pose:
             return (add_col1(other) @ self.Tt)[:, :3]
         else:
             return self.M @ other.T
-
-
-            # raise NotImplementedError
-
-
-
-    #
-    # def c2w(self, xyz):
-    #     if xyz.shape[1] == 3:
-    #         xyz = add_col1(xyz)
-    #     return (xyz @ self.Tt)[:, :3]
-    #
-    # def w2c(self, xyz):
-    #     if xyz.shape[1] == 3:
-    #         xyz = add_col1(xyz)
-    #     return (xyz @ invert(self.Tt))[:, :3]
-
-

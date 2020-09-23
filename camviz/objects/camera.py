@@ -1,32 +1,26 @@
 
-from camviz.objects.object import *
-from camviz.utils import *
+import numpy as np
+from camviz.objects.object import Object
+from camviz.utils.geometry import transpose, invert
+from camviz.utils.utils import numpyf, add_row0, add_col1, image_grid
 
 
 class Camera(Object):
 
-    def __init__(self, scale=1.0, wh=None, K=None, pose=None, align=None):
-        super(Camera, self).__init__(scale, pose)
-
+    def __init__(self, scale=1.0, wh=None, K=None, pose=None):
+        super().__init__(scale, pose)
         if K is not None:
             self.K = transpose(numpyf(K))
             self.iK = np.linalg.inv(self.K)
-
         if wh is not None:
             if not isinstance(wh, (list, tuple)):
                 wh = wh.shape[:2]
             self.w, self.h = wh
-            uv = numpyf([[self.w - 1, 0],
+            uv = numpyf([[self.w - 1,     0     ],
                          [self.w - 1, self.h - 1],
-                         [0, self.h - 1],
-                         [0, 0]])
+                         [    0     , self.h - 1],
+                         [    0     ,     0     ]])
             self.v = add_row0(self.i2c(uv, scale))
-
-    @property
-    def pos(self): return self.T()[:3, 3]
-
-    @property
-    def rot(self): return self.T()[:3, :3]
 
     def i2c(self, uv, depth=1.0):
         if uv.shape[1] == 2:

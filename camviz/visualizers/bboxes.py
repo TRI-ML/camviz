@@ -2,7 +2,7 @@
 import numpy as np
 
 from camviz.draw import Draw
-from camviz.utils import cmapJET
+from camviz.utils.utils import cmapJET
 from camviz.objects.bbox3d import BBox3D
 from camviz.objects.camera import Camera
 
@@ -126,7 +126,7 @@ class CamvizBBoxes:
 
         # Create window and different screens
         self.draw = Draw(window_size)
-        self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lid',
+        self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lidar',
                              pose=(-74.37884, 4.35606, 53.99322, 0.29453, 0.64556, -0.64107, 0.29248))
         self.draw.add2Dimage('img0', (0.00, 0.00, 0.25, 0.33), wh)
         self.draw.add2Dimage('img1', (0.25, 0.00, 0.50, 0.33), wh)

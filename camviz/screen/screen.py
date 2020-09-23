@@ -6,6 +6,7 @@ class Screen:
 
     def __init__(self, luwh, mode):
         self.luwh, self.mode = luwh, mode
+        self.origin = self.viewer = None
 
     def inside(self, pos):
         return self.luwh[0] < pos[0] < self.luwh[0] + self.luwh[2] and \

@@ -1,21 +1,29 @@
 
 import pygame
+import numpy as np
 from pygame.locals import *
 from PIL import Image, ImageOps
 import time
 
-from camviz.draw_input import DrawInput
-from camviz.draw_texture import DrawTexture
-from camviz.draw_buffer import DrawBuffer
+from camviz.draw.draw_input import DrawInput
+from camviz.draw.draw_texture import DrawTexture
+from camviz.draw.draw_buffer import drawBuffer
 
-from camviz.screen2Dimage import Screen2Dimage
-from camviz.screen3Dworld import Screen3Dworld
+from camviz.screen.screen2Dimage import Screen2Dimage
+from camviz.screen.screen3Dworld import Screen3Dworld
 
-from camviz.opengl_shapes import *
-from camviz.utils import *
+from camviz.opengl.opengl_shapes import setPointSize, setLineWidth
+from camviz.opengl.opengl_colors import setColor
+from camviz.utils.types import is_tup, is_lst
+from camviz.utils.utils import labelrc
+
+from OpenGL.GL import glReadPixels, glViewport, glScissor, \
+    glClear, glClearColor, glPixelStorei, \
+    GL_BGR, GL_UNSIGNED_BYTE, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, \
+    GL_PACK_ALIGNMENT, GL_RGBA
 
 
-class Draw(DrawInput, DrawTexture, DrawBuffer):
+class Draw(DrawInput, DrawTexture, drawBuffer):
 
     def __init__(self, wh, rc=None, title=None):
         """
@@ -23,12 +31,13 @@ class Draw(DrawInput, DrawTexture, DrawBuffer):
         :param wh: width and height of window
         :param rc: number of row and columns (multiplying wh)
         """
-        super(Draw, self).__init__()
+        super().__init__()
 
         pygame.display.init()
         if title is not None:
             pygame.display.set_caption(title)
 
+        wh = [int(val) for val in wh]
         self.wh = self.curr_color = self.curr_size = self.curr_width = None
         self.screens, self.textures, self.buffers = {}, {}, {}
         self.idx_screen = None
@@ -97,7 +106,10 @@ class Draw(DrawInput, DrawTexture, DrawBuffer):
 
         glViewport(l, u, w, h)
         glScissor(l, u, w, h)
+        # if self.currScreen().background == 'bla':
         glClearColor(0.0, 0.0, 0.0, 1.0)
+        # elif self.currScreen().background == 'whi':
+        #     glClearColor(1.0, 1.0, 1.0, 1.0)
 
         self.currScreen().prepare()
         return self
@@ -119,7 +131,7 @@ class Draw(DrawInput, DrawTexture, DrawBuffer):
         else:
             self.screens[name] = Screen2Dimage(self.addScreen(luwh), res)
 
-    def add3Dworld(self, name, luwh, wh=None, K=None, nf=None, pose=None, ref='cam'):
+    def add3Dworld(self, name, luwh, **kwargs):
         if is_tup(name):
             name = labelrc(name)
         if is_lst(name):
@@ -132,13 +144,9 @@ class Draw(DrawInput, DrawTexture, DrawBuffer):
                     d = (luwh[2] - luwh[0]) / len(name[i])
                     luwhi[0] = luwh[0] + j * d
                     luwhi[2] = luwhi[0] + d
-                    self.add3Dworld(name[i][j], luwhi, wh, K, nf, ref)
+                    self.add3Dworld(name[i][j], luwhi, **kwargs)
         else:
-            self.screens[name] = Screen3Dworld(self.addScreen(luwh), wh, K, nf, ref)
-        if ref == 'lid':
-            self.screens[name].viewer.rotateY(-90).rotateZ(90)
-        if pose is not None:
-            self.screens[name].viewer.setPose(pose)
+            self.screens[name] = Screen3Dworld(self.addScreen(luwh), **kwargs)
 
     @staticmethod
     def clear():

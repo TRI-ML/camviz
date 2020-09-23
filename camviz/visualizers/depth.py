@@ -2,7 +2,7 @@
 import numpy as np
 
 from camviz.draw import Draw
-from camviz.utils import cmapJET
+from camviz.utils.utils import cmapJET
 from camviz.objects.camera import Camera
 
 
@@ -139,7 +139,7 @@ class CamvizDepth:
         self.num_cams = num_cams
         self.draw = Draw((wh[0] * 4 // scale, wh[1] * 3 // scale))
 
-        self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lid',
+        self.draw.add3Dworld('wld', (0.50, 0.00, 1.00, 1.00), nf=(0.1, 1000), ref='lidar',
                              pose=(-35.13999, 1.00936, 19.00621, 0.37096, 0.60595, -0.60017, 0.36742))
         self.draw.add2Dimage('cam_0', (0.00, 0.00, 0.25, 0.33), wh)
         self.draw.add2Dimage('cam_1', (0.00, 0.33, 0.25, 0.67), wh)
