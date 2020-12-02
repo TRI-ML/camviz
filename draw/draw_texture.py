@@ -3,7 +3,7 @@ from OpenGL.GL import \
     glTexCoord2f, glBegin, glEnd, glVertex2fv, glVertex3fv, \
     GL_QUADS
 
-from camviz.texture import Texture
+from camviz.data.texture import Texture
 from camviz.opengl.opengl_colors import White
 from camviz.utils.types import is_tup, is_lst
 from camviz.utils.utils import labelrc, numpyf

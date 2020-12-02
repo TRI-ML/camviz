@@ -8,7 +8,7 @@ from OpenGL.GL import glEnableClientState, glDisableClientState, \
     GL_FLOAT, GL_UNSIGNED_INT, GL_POINTS, GL_FRONT_AND_BACK, GL_COLOR_ARRAY, \
     GL_VERTEX_ARRAY, GL_LINE, GL_LINES, GL_LINE_LOOP, GL_LINE_STRIP, GL_QUADS, GL_TRIANGLES
 
-from camviz.buffer import Buffer
+from camviz.data.buffer import Buffer
 from camviz.utils.types import is_lst, is_str
 from camviz.utils.utils import grid_idx, cmapJET
 from camviz.opengl.opengl_shapes import drawConnects, drawMatches, drawAxis, drawEllipse
