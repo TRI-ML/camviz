@@ -2,7 +2,7 @@
 
 from OpenGL.GL import *
 
-from display.camviz.objects.pose import Pose
+from camviz.objects.pose import Pose
 
 
 class Object:

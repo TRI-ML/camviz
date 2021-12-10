@@ -4,9 +4,9 @@ from copy import deepcopy
 
 import numpy as np
 
-from display.camviz.objects.quaternion import Quaternion
-from display.camviz.utils.geometry import unitX, unitY, unitZ
-from display.camviz.utils.utils import numpyf, add_col1
+from camviz.objects.quaternion import Quaternion
+from camviz.utils.geometry import unitX, unitY, unitZ
+from camviz.utils.utils import numpyf, add_col1
 
 
 def rot2quat(R):

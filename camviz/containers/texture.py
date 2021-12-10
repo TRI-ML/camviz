@@ -8,7 +8,7 @@ from OpenGL.GL import \
     GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_MAG_FILTER, \
     GL_TEXTURE_MIN_FILTER, GL_REPEAT, GL_NEAREST, GL_RGB, GL_RGBA, GL_UNSIGNED_BYTE
 
-from packnet_sfm.utils.types import is_str, is_tensor, is_numpy, is_tuple
+from camviz.utils.types import is_str, is_tensor, is_numpy, is_tuple
 
 
 def load(image):
@@ -88,11 +88,17 @@ class Texture:
     def _create(self, data):
         """Create a texture buffer from data"""
         # If it's tuple, it only contains dimensions
-        if is_tuple(data) or is_tensor(data):
-            image, (w, h) = None, data[:2]
+        if is_tuple(data):
+            image = None
+            w, h = data[:2]
+        # If it's a tensor, convert to numpy
+        elif is_tensor(data):
+            image = data.detach().cpu().numpy().transpose(1, 2, 0) * 255
+            h, w = data.shape[-2:]
         # Otherwise, it contains data and dimensions
         else:
-            image, (h, w) = data, data.shape[:2]
+            image = data * 255
+            h, w = data.shape[:2]
         # Store dimensions
         self.wh = (int(w), int(h))
         # Bind and fill texture

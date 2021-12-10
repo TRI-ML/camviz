@@ -4,8 +4,9 @@ import numpy as np
 from OpenGL.GL import \
     glGenBuffers, glBindBuffer, glBufferData, glBufferSubData, GL_ARRAY_BUFFER, GL_STATIC_DRAW
 
-from display.camviz.utils.utils import numpyf, cmapJET
-from packnet_sfm.utils.types import is_tuple, is_list, is_tensor
+from camviz.utils.utils import numpyf
+from camviz.utils.types import is_tuple, is_list, is_tensor
+from camviz.utils.cmaps import jet
 
 
 class Buffer:
@@ -101,4 +102,4 @@ class Buffer:
 
     def updateJET(self, data):
         """Update buffer using a JET colormap"""
-        self.update(cmapJET(data))
+        self.update(jet(data))

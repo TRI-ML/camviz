@@ -11,20 +11,20 @@ from OpenGL.GL import glReadPixels, glViewport, glScissor, \
 from PIL import Image, ImageOps
 from pygame.locals import *
 
-from display.camviz.draw.draw_buffer import drawBuffer
-from display.camviz.draw.draw_input import DrawInput
-from display.camviz.draw.draw_texture import DrawTexture
-from display.camviz.opengl.opengl_colors import setColor
-from display.camviz.opengl.opengl_shapes import setPointSize, setLineWidth
-from display.camviz.screen.screen2Dimage import Screen2Dimage
-from display.camviz.screen.screen3Dworld import Screen3Dworld
-from display.camviz.utils.utils import labelrc
-from packnet_sfm.utils.types import is_tuple, is_list
+from camviz.draw.draw_buffer import drawBuffer
+from camviz.draw.draw_input import DrawInput
+from camviz.draw.draw_texture import DrawTexture
+from camviz.opengl.opengl_colors import setColor
+from camviz.opengl.opengl_shapes import setPointSize, setLineWidth
+from camviz.screen.screen2Dimage import Screen2Dimage
+from camviz.screen.screen3Dworld import Screen3Dworld
+from camviz.utils.types import is_tuple, is_list
+from camviz.utils.utils import labelrc
 
 
 class Draw(DrawInput, DrawTexture, drawBuffer):
 
-    def __init__(self, wh, rc=None, title=None, scale=1.0):
+    def __init__(self, wh, rc=None, title=None, scale=1.0, width=1600):
         """
         Draw class for display visualization
 
@@ -41,12 +41,14 @@ class Draw(DrawInput, DrawTexture, drawBuffer):
         """
         super().__init__()
         # Initialize pygame display
-        pygame.display.init()
+        pygame.init()
         # Initialize title
         if title is not None:
             pygame.display.set_caption(title)
         # Initialize parameters
         wh = [int(val * scale) for val in wh]
+        if width is not None:
+            wh[0], wh[1] = width, width * wh[1] // wh[0]
         self.wh = self.curr_color = self.curr_size = self.curr_width = None
         self.screens, self.textures, self.buffers = {}, {}, {}
         self.idx_screen = None

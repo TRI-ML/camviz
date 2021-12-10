@@ -9,9 +9,11 @@ class DrawInput:
         # Initialize basic keys
         self.UP = self.DOWN = self.LEFT = self.RIGHT = False
         self.RCTRL = self.LCTRL = self.RALT = self.LALT = self.RSHIFT = self.LSHIFT = False
-        self.SPACE = self.RETURN = False
+        self.SPACE = self.RETURN = self.PGUP = self.PGDOWN = False
         # Initialize letter keys
-        self.KEY_S = False
+        self.KEY_Q = self.KEY_W = self.KEY_E = self.KEY_R = self.KEY_T = False
+        self.KEY_A = self.KEY_S = self.KEY_D = self.KEY_F = self.KEY_G = False
+        self.KEY_Z = self.KEY_X = self.KEY_C = self.KEY_V = self.KEY_B = False
         # Initialize number keys
         self.KEY_0 = self.KEY_1 = self.KEY_2 = self.KEY_3 = self.KEY_4 = self.KEY_5 = \
             self.KEY_6 = self.KEY_7 = self.KEY_8 = self.KEY_9 = False
@@ -52,6 +54,10 @@ class DrawInput:
             self.RSHIFT = flag
         if key == pygame.K_LSHIFT:
             self.LSHIFT = flag
+        if key == pygame.K_PAGEUP:
+            self.PGUP = flag
+        if key == pygame.K_PAGEDOWN:
+            self.PGDOWN = flag
 
         if key == pygame.K_SPACE:
             self.SPACE = flag
@@ -60,6 +66,26 @@ class DrawInput:
 
         if key == pygame.K_s:
             self.KEY_S = flag
+        if key == pygame.K_q:
+            self.KEY_Q = flag
+        if key == pygame.K_w:
+            self.KEY_W = flag
+        if key == pygame.K_e:
+            self.KEY_E = flag
+        if key == pygame.K_r:
+            self.KEY_R = flag
+        if key == pygame.K_t:
+            self.KEY_T = flag
+        if key == pygame.K_a:
+            self.KEY_A = flag
+        if key == pygame.K_s:
+            self.KEY_S = flag
+        if key == pygame.K_d:
+            self.KEY_D = flag
+        if key == pygame.K_f:
+            self.KEY_F = flag
+        if key == pygame.K_g:
+            self.KEY_G = flag
 
         if key == pygame.K_0:
             self.KEY_0 = flag
@@ -133,14 +159,14 @@ class DrawInput:
                 if focus and screen.mode is '3D_WORLD':
                     if event.button == 4:   # Wheel forward
                         if self.RALT: # Going for rotation in Z
-                            screen.viewer.rotateZ(5.0 if self.RCTRL else 0.5)
+                            screen.viewer.rotateZ(5.0 if self.RCTRL else 0.05 if self.LCTRL else 0.5)
                         else: # Going for translation in Z
-                            screen.viewer.translateZ(+(5.0 if self.RCTRL else 1.0))
+                            screen.viewer.translateZ(+(5.0 if self.RCTRL else 0.2 if self.LCTRL else 1.0))
                     if event.button == 5:   # Wheel backwards
                         if self.RALT: # Going for rotation in Z
-                            screen.viewer.rotateZ(-5.0 if self.RCTRL else -0.5)
+                            screen.viewer.rotateZ(-5.0 if self.RCTRL else -0.05 if self.LCTRL else -0.5)
                         else: # Going for translation in Z
-                            screen.viewer.translateZ(-(5.0 if self.RCTRL else 1.0))
+                            screen.viewer.translateZ(-(5.0 if self.RCTRL else 0.2 if self.LCTRL else 1.0))
                     if event.button == 1:   # Left button
                         self.motion_type, self.mouse_pos = 1, pos
                     if event.button == 3:   # Right button
@@ -193,18 +219,18 @@ class DrawInput:
                     self.mouse_pos = pos
                     # If left button
                     if self.motion_type == 1:
-                        mlin = 1.00 if self.RCTRL else 0.10
-                        screen.viewer.translateX( - dX * mlin )
-                        screen.viewer.translateY( - dY * mlin )
+                        mlin = 1.00 if self.RCTRL else 0.02 if self.LCTRL else 0.10
+                        screen.viewer.translateX(- dX * mlin)
+                        screen.viewer.translateY(- dY * mlin)
                     # If right button
                     elif self.motion_type == 3:
-                        mang = 0.25 if self.RCTRL else 0.05
+                        mang = 0.25 if self.RCTRL else 0.01 if self.LCTRL else 0.05
                         if screen.ref == 'cam':     # Rotation in camera reference
-                            screen.viewer.rotateX( - dY * mang )
-                            screen.viewer.rotateY( + dX * mang )
+                            screen.viewer.rotateX(- dY * mang)
+                            screen.viewer.rotateY(+ dX * mang)
                         elif screen.ref == 'lidar': # Rotation in lidar reference
-                            screen.viewer.rotateX( - dY * mang )
-                            screen.viewer.rotateZ( - dX * mang )
+                            screen.viewer.rotateX(- dY * mang)
+                            screen.viewer.rotateZ(- dX * mang)
             # If it's a 2D image screen
             elif screen.mode == '2D_IMAGE':
                 # Get new mouse position
@@ -236,7 +262,7 @@ class DrawInput:
         pygame.time.wait(wait)
 
     @staticmethod
-    def control( obj ):
+    def control(obj):
         """Control an object with keyboard"""
         # Get velocity values
         dlin, dang = 0.2, 5.0

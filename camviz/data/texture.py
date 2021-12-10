@@ -9,7 +9,7 @@ from OpenGL.GL import \
     GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T, GL_TEXTURE_MAG_FILTER, \
     GL_TEXTURE_MIN_FILTER, GL_REPEAT, GL_NEAREST, GL_RGB, GL_RGBA, GL_UNSIGNED_BYTE
 
-from packnet_sfm.utils.types import is_str, is_tensor, is_numpy, is_tuple
+from camviz.utils.types import is_str, is_tensor, is_numpy, is_tuple
 
 
 def load(image):
