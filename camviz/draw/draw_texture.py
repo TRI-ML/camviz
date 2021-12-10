@@ -4,10 +4,10 @@ from OpenGL.GL import \
     glTexCoord2f, glBegin, glEnd, glVertex2fv, glVertex3fv, \
     GL_QUADS
 
-from display.camviz.containers.texture import Texture
-from display.camviz.opengl.opengl_colors import White
-from display.camviz.utils.utils import labelrc, numpyf
-from packnet_sfm.utils.types import is_tuple, is_list, is_int
+from camviz.containers.texture import Texture
+from camviz.opengl.opengl_colors import White
+from camviz.utils.utils import labelrc, numpyf
+from camviz.utils.types import is_tuple, is_list, is_int
 
 class DrawTexture:
     """Draw subclass containing texture methods"""

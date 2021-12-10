@@ -8,9 +8,9 @@ from OpenGL.GL import \
 from OpenGL.GLU import \
     gluSphere, gluNewQuadric
 
-from display.camviz.opengl.opengl_colors import Green, Blue, Red
-from display.camviz.utils.utils import numpyf, add_list
-from packnet_sfm.utils.types import is_numpy, is_double_list
+from camviz.opengl.opengl_colors import Green, Blue, Red
+from camviz.utils.utils import numpyf, add_list
+from camviz.utils.types import is_numpy, is_double_list
 
 
 def vertex_line(pt1, pt2):

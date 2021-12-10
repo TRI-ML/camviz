@@ -5,8 +5,8 @@ from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
 from OpenGL.GL import glMatrixMode, glEnable, glLoadIdentity, glMultMatrixf
 from OpenGL.GLU import gluPerspective, gluLookAt
 
-from display.camviz.objects.pose import Pose
-from display.camviz.screen.screen import Screen
+from camviz.objects.pose import Pose
+from camviz.screen.screen import Screen
 
 
 class Screen3Dworld(Screen):

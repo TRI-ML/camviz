@@ -8,14 +8,18 @@ from OpenGL.GL import glEnableClientState, glDisableClientState, \
     GL_FLOAT, GL_UNSIGNED_INT, GL_POINTS, GL_FRONT_AND_BACK, GL_COLOR_ARRAY, \
     GL_VERTEX_ARRAY, GL_LINE, GL_LINES, GL_LINE_LOOP, GL_LINE_STRIP, GL_QUADS, GL_TRIANGLES
 
-from display.camviz.containers.buffer import Buffer
-from display.camviz.opengl.opengl_shapes import drawConnects, drawMatches, drawAxis, drawEllipse
-from display.camviz.utils.utils import grid_idx, cmapJET
-from packnet_sfm.utils.types import is_str, is_list, is_tuple, is_int
+from camviz.containers.buffer import Buffer
+from camviz.opengl.opengl_shapes import drawConnects, drawMatches, drawAxis, drawEllipse
+from camviz.utils.utils import grid_idx
+from camviz.utils.types import is_str, is_list, is_tuple, is_int
+from camviz.utils.cmaps import jet
 
 
 class drawBuffer:
     """Draw subclass containing data buffer methods"""
+    def __init__(self):
+        pass
+
     def addBuffer(self, name, data, dtype, gltype, n=None):
         """
         Create a new data buffer
@@ -72,7 +76,7 @@ class drawBuffer:
 
     def addBufferJET(self, name, data=0):
         """Create a JET colormap buffer from data"""
-        self.addBufferf(name, cmapJET(data))
+        self.addBufferf(name, jet(data))
 
     def addBuffer3JET(self, name, data=0):
         """Create an empty 3D colormap buffer from data"""

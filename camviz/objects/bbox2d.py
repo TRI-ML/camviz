@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from display.camviz.objects.object import Object
+from camviz.objects.object import Object
 
 
 class BBox2D(Object):

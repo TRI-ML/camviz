@@ -4,7 +4,7 @@ from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glDisable
 from OpenGL.GLU import gluOrtho2D
 
-from display.camviz.screen.screen import Screen
+from camviz.screen.screen import Screen
 
 
 class Screen2Dimage(Screen):

@@ -1,6 +1,6 @@
 # Copyright 2021 Toyota Research Institute.  All rights reserved.
 
-from display.camviz.objects.object import Object
+from camviz.objects.object import Object
 
 
 class BBox3D(Object):
