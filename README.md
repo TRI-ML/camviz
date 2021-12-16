@@ -47,7 +47,7 @@ Although **CamViz** works as a standalone library, it was designed specifically 
 We provide a `requirements.txt` file with all the required libraries (tested on Ubuntu 18.04). To start using **CamViz** all you need to do is:
 
 ```
-git clone git@github.com:TRI-ML/camviz_internal.git
+git clone git@github.com:TRI-ML/camviz.git
 cd camviz
 pip install -r requirements.txt
 PYTHONPATH=$PYTHONPATH:/path/to/camviz
