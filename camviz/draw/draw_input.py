@@ -1,4 +1,4 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 import pygame
 
@@ -64,8 +64,6 @@ class DrawInput:
         if key == pygame.K_RETURN:
             self.RETURN = flag
 
-        if key == pygame.K_s:
-            self.KEY_S = flag
         if key == pygame.K_q:
             self.KEY_Q = flag
         if key == pygame.K_w:
@@ -76,6 +74,7 @@ class DrawInput:
             self.KEY_R = flag
         if key == pygame.K_t:
             self.KEY_T = flag
+
         if key == pygame.K_a:
             self.KEY_A = flag
         if key == pygame.K_s:
@@ -86,6 +85,17 @@ class DrawInput:
             self.KEY_F = flag
         if key == pygame.K_g:
             self.KEY_G = flag
+
+        if key == pygame.K_z:
+            self.KEY_Z = flag
+        if key == pygame.K_x:
+            self.KEY_X = flag
+        if key == pygame.K_c:
+            self.KEY_C = flag
+        if key == pygame.K_v:
+            self.KEY_V = flag
+        if key == pygame.K_b:
+            self.KEY_B = flag
 
         if key == pygame.K_0:
             self.KEY_0 = flag
@@ -156,7 +166,7 @@ class DrawInput:
                 self.mouse_down = True
                 self.tmp_screen, self.tmp_focus = screen, focus
                 # If it's a 3D world screen
-                if focus and screen.mode is '3D_WORLD':
+                if focus and screen.mode == '3D_WORLD':
                     if event.button == 4:   # Wheel forward
                         if self.RALT: # Going for rotation in Z
                             screen.viewer.rotateZ(5.0 if self.RCTRL else 0.05 if self.LCTRL else 0.5)
@@ -174,7 +184,7 @@ class DrawInput:
                     if event.button == 2:   # Wheel press
                         screen.reset()
                 # If it's a 2D image screen
-                if focus and screen.mode is '2D_IMAGE':
+                if focus and screen.mode == '2D_IMAGE':
                     if event.button == 1:   # Left button
                         self.motion_type, self.mouse_pos = 1, pos
                     if event.button == 2:   # Wheel press

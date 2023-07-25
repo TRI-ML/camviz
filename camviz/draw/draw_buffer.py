@@ -1,4 +1,4 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 import numpy as np
 from OpenGL.GL import glEnableClientState, glDisableClientState, \
@@ -188,12 +188,14 @@ class drawBuffer:
             self.setCSW(csw)
         # If vert is available
         if vert is not None:
+            if vert not in self.buffers.keys():
+                return None
             vert = self.buffers[vert]
             glEnableClientState(GL_VERTEX_ARRAY)
             glBindBuffer(GL_ARRAY_BUFFER, vert.id)
             glVertexPointer(vert.d, vert.gltype, 0, None)
         # If color is available
-        if color is not None:
+        if color is not None and color in self.buffers:
             color = self.buffers[color]
             glEnableClientState(GL_COLOR_ARRAY)
             glBindBuffer(GL_ARRAY_BUFFER, color.id)
@@ -204,7 +206,7 @@ class drawBuffer:
         else:
             idx = self.buffers[idx]
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx.id)
-            glDrawElements(shape, idx.n, idx.gltype, None)
+            glDrawElements(shape, 3 * idx.n, idx.gltype, None)
         # Bind buffers
         glBindBuffer(GL_ARRAY_BUFFER, 0)
         # Unbind vertices

@@ -1,4 +1,4 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 import numpy as np
 
@@ -56,14 +56,18 @@ class Camera(Object):
             if not isinstance(wh, (list, tuple)):
                 wh = wh.shape[:2]
             self.w, self.h = wh
-            uv = numpyf([[self.w - 1,     0     ],
-                         [self.w - 1, self.h - 1],
-                         [    0     , self.h - 1],
-                         [    0     ,     0     ]])
+            # uv = numpyf([[self.w - 1,     0     ],
+            #              [self.w - 1, self.h - 1],
+            #              [    0     , self.h - 1],
+            #              [    0     ,     0     ]])
+            uv = numpyf([[self.w,   0   ],
+                         [self.w, self.h],
+                         [  0   , self.h],
+                         [  0   ,   0   ]])
             self.v = add_row0(self.i2c(scale, uv))
 
     @staticmethod
-    def from_vidar(cam, b, scale=1.0):
+    def from_vidar(cam, b=0, scale=1.0):
         return Camera(K=cam.K[b][:3, :3],
                       pose=cam.Tcw.T[b] if cam.Twc is not None else None,
                       wh=cam.wh, scale=scale)
@@ -167,7 +171,7 @@ class Camera(Object):
         return self.c2i(self.w2c(xyz), filter=filter,
                         padding=padding, return_z=return_z)
 
-    def draw(self, draw, tex=None, axes=True, color='gra'):
+    def draw(self, draw, tex=None, axes=True, color='gra', width=4):
         """
         Draw a camera in a 3D screen
 
@@ -183,6 +187,6 @@ class Camera(Object):
             Which color should be used for the camera
         """
         draw.image(tex, verts=self.v[:4])
-        draw.color(color).width(4).connects(self.v[4], self.v[:4]).loop(self.v[:4])
+        draw.color(color).width(width).connects(self.v[4], self.v[:4]).loop(self.v[:4])
         if axes:
             draw.axis(0.25 * self.scale)

@@ -1,10 +1,11 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
+import OpenGL.GL as gl
+import OpenGL.GLUT as glut
 import numpy as np
-from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
-from OpenGL.GL import glMatrixMode, glEnable, glLoadIdentity, glMultMatrixf
-from OpenGL.GLU import gluPerspective, gluLookAt
-
+from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW, GL_BLEND, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA
+from OpenGL.GL import glMatrixMode, glEnable, glDisable, glLoadIdentity, glMultMatrixf, glBlendFunc
+from OpenGL.GLU import gluPerspective, gluLookAt, gluOrtho2D
 from camviz.objects.pose import Pose
 from camviz.screen.screen import Screen
 
@@ -31,10 +32,11 @@ class Screen3Dworld(Screen):
         Coordinate reference system ['cam', 'lidar']
     """
     def __init__(self, luwh, wh=None, K=None, nf=(0.01, 10000.0),
-                 background='bla', pose=None, ref='cam'):
+                 enable_blending=False, background='bla', pose=None, ref='cam'):
         super().__init__(luwh, '3D_WORLD')
         self.wh, self.K, self.nf = wh, K, nf
         self.viewer = self.origin = self.P = None
+        self.enable_blending = enable_blending
         self.background = background
         self.ref = ref
         # Start and prepare screen
@@ -61,7 +63,12 @@ class Screen3Dworld(Screen):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
 
-        glEnable(GL_DEPTH_TEST)
+        if self.enable_blending:
+            glDisable(GL_DEPTH_TEST)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        else:
+            glEnable(GL_DEPTH_TEST)
 
         # If calibration matrix is provided, use it
         if self.P is not None:
@@ -108,3 +115,44 @@ class Screen3Dworld(Screen):
         self.P[11] = - 1.0
 
         self.P = np.reshape(self.P, (4, 4))
+
+    def text(self, text, wh):
+
+        # font = glut.GLUT_BITMAP_HELVETICA_18
+        font = glut.GLUT_BITMAP_TIMES_ROMAN_24
+
+        width, height = wh
+        line_height = 36
+
+        if height > 0:
+            height = height * line_height + 20
+        elif height < 0:
+            height = self.luwh[3] + (height * line_height) - 20
+
+        width = width + 10
+
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        gluOrtho2D(0, self.luwh[2], self.luwh[3], 0)
+
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        gl.glColor3f(1, 1, 1)
+
+        gl.glRasterPos2i(width, height + line_height)
+
+        for ch in text:
+            if ch == '\n':
+                height = height + line_height
+                gl.glRasterPos2i(width, height + line_height)
+            else:
+                glut.glutBitmapCharacter(font, ord(ch))
+
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPopMatrix()
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glPopMatrix()

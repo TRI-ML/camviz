@@ -4,7 +4,7 @@ from OpenGL.GL import \
     glGenBuffers, glBindBuffer, glBufferData, glBufferSubData, GL_ARRAY_BUFFER, GL_STATIC_DRAW
 
 from camviz.utils.utils import numpyf
-from camviz.utils.types import is_tuple, is_list, is_tensor
+from camviz.utils.types import is_tuple, is_list, is_tensor, is_numpy
 from camviz.utils.cmaps import jet
 
 
@@ -66,6 +66,9 @@ class Buffer:
             if data.dim() == 3 and data.shape[0] == 3:
                 data = data.permute(1, 2, 0).reshape(-1, 3)
             data = data.detach().cpu().numpy()
+        elif is_numpy(data):
+            if data.ndim == 3:
+                data = data.reshape(-1, 3)
         # If it's not the correct type, convert
         if data.dtype != self.dtype:
             data = data.astype(self.dtype)
