@@ -1,7 +1,8 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 import time
 
+import OpenGL.GLUT as glut
 import numpy as np
 import pygame
 from OpenGL.GL import glReadPixels, glViewport, glScissor, \
@@ -9,22 +10,22 @@ from OpenGL.GL import glReadPixels, glViewport, glScissor, \
     GL_BGR, GL_UNSIGNED_BYTE, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, \
     GL_PACK_ALIGNMENT, GL_RGBA
 from PIL import Image, ImageOps
-from pygame.locals import *
-
 from camviz.draw.draw_buffer import drawBuffer
 from camviz.draw.draw_input import DrawInput
 from camviz.draw.draw_texture import DrawTexture
+from camviz.objects.camera import Camera
 from camviz.opengl.opengl_colors import setColor
 from camviz.opengl.opengl_shapes import setPointSize, setLineWidth
 from camviz.screen.screen2Dimage import Screen2Dimage
 from camviz.screen.screen3Dworld import Screen3Dworld
 from camviz.utils.types import is_tuple, is_list
 from camviz.utils.utils import labelrc
+from pygame.locals import *
 
 
 class Draw(DrawInput, DrawTexture, drawBuffer):
 
-    def __init__(self, wh, rc=None, title=None, scale=1.0, width=1600):
+    def __init__(self, wh=(1600, 900), rc=None, title=None, scale=1.0, width=1600):
         """
         Draw class for display visualization
 
@@ -42,6 +43,7 @@ class Draw(DrawInput, DrawTexture, drawBuffer):
         super().__init__()
         # Initialize pygame display
         pygame.init()
+        glut.glutInit()
         # Initialize title
         if title is not None:
             pygame.display.set_caption(title)
@@ -140,6 +142,7 @@ class Draw(DrawInput, DrawTexture, drawBuffer):
         glScissor(l, u, w, h)
         # Set background color
         glClearColor(0.0, 0.0, 0.0, 1.0)
+        # glClearColor(1.0, 1.0, 1.0, 1.0)
         # Prepare current screen
         self.currScreen().prepare()
         return self
@@ -318,10 +321,10 @@ class Draw(DrawInput, DrawTexture, drawBuffer):
         setLineWidth(n)
         return self
 
-    def color(self, clr):
+    def color(self, clr, a=1.0):
         """Set plot color"""
         self.curr_color = clr
-        setColor(clr)
+        setColor(clr, a=a)
         return self
 
     def setCSW(self, csw):
@@ -349,3 +352,9 @@ class Draw(DrawInput, DrawTexture, drawBuffer):
         # Save image and halt for a bit
         image.save(filename, 'PNG')
         self.halt(1000)
+
+    def cvcam(self, cam, *args, **kwargs):
+        return Camera.from_vidar(cam, *args, **kwargs)
+
+    def text(self, string, wh):
+        return self.currScreen().text(string, wh)

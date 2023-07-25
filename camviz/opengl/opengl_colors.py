@@ -1,63 +1,73 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
-from OpenGL.GL import glColor3fv
+from OpenGL.GL import glColor3fv, glColor4fv
 
-def Red(n=1.0):
+
+def Red(n=1.0, a=1.0):
     """Change to red color"""
-    glColor3fv((n, 0.0, 0.0))
+    glColor4fv((n, 0.0, 0.0, a))
 
-def Green(n=1.0):
+
+def Green(n=1.0, a=1.0):
     """Change to green color"""
-    glColor3fv((0.0, n, 0.0))
+    glColor4fv((0.0, n, 0.0, a))
 
-def Blue(n=1.0):
+
+def Blue(n=1.0, a=1.0):
     """Change to blue color"""
-    glColor3fv((0.0, 0.0, n))
+    glColor4fv((0.0, 0.0, n, a))
 
-def Yellow(n=1.0):
+
+def Yellow(n=1.0, a=1.0):
     """Change to yellow color"""
-    glColor3fv((n, n, 0.0))
+    glColor4fv((n, n, 0.0, a))
 
-def Magenta(n=1.0):
+
+def Magenta(n=1.0, a=1.0):
     """Change to magenta color"""
-    glColor3fv((n, 0.0, n))
+    glColor4fv((n, 0.0, n, a))
 
-def Cyan(n=1.0):
+
+def Cyan(n=1.0, a=1.0):
     """Change to cyan color"""
-    glColor3fv((0.0, n, n))
+    glColor4fv((0.0, n, n, a))
 
-def Black():
+
+def Black(a=1.0):
     """Change to black color"""
-    glColor3fv((0.0, 0.0, 0.0))
+    glColor4fv((0.0, 0.0, 0.0, a))
 
-def White():
+
+def White(a=1.0):
     """Change to white color"""
-    glColor3fv((1.0, 1.0, 1.0))
+    glColor4fv((1.0, 1.0, 1.0, a))
 
-def Gray():
+
+def Gray(a=1.0):
     """Change to gray color"""
-    glColor3fv((0.5, 0.5, 0.5))
+    glColor4fv((0.5, 0.5, 0.5, a))
 
-def setColor(clr, n=1.0):
+
+def setColor(clr, n=1.0, a=1.0):
     """Change to an specific color based on a string"""
     if clr == 'red':
-        Red(n)
+        Red(n, a=a)
     if clr == 'gre':
-        Green(n)
+        Green(n, a=a)
     if clr == 'blu':
-        Blue(n)
+        Blue(n, a=a)
     if clr == 'yel':
-        Yellow(n)
+        Yellow(n, a=a)
     if clr == 'mag':
-        Magenta(n)
+        Magenta(n, a=a)
     if clr == 'cya':
-        Cyan(n)
+        Cyan(n, a=a)
     if clr == 'blk':
-        Black()
+        Black(a=a)
     if clr == 'whi':
-        White()
+        White(a=a)
     if clr == 'gra':
-        Gray()
+        Gray(a=a)
     # If clr is a tuple, create that specific color
     if isinstance(clr, tuple):
         glColor3fv(clr)

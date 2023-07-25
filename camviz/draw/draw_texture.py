@@ -1,4 +1,4 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 from OpenGL.GL import \
     glTexCoord2f, glBegin, glEnd, glVertex2fv, glVertex3fv, \
@@ -64,7 +64,7 @@ class DrawTexture:
             If true, resize screen to fit new image
         """
         # If no name is provided, return None
-        if name is None:
+        if name is None or name not in self.textures:
             return
         # Get texture ID from name
         tex = self.textures[name]

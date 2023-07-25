@@ -1,4 +1,4 @@
-# Copyright 2021 Toyota Research Institute.  All rights reserved.
+# Copyright 2023 Toyota Research Institute.  All rights reserved.
 
 from OpenGL.GL import GL_PROJECTION, GL_DEPTH_TEST, GL_MODELVIEW
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glDisable
@@ -43,3 +43,40 @@ class Screen2Dimage(Screen):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+    def printText(self, wh, string):
+
+        import OpenGL.GL as gl
+        import OpenGL.GLUT as glut
+
+        width, height = wh
+        line_height = 5
+
+        # font = glut.GLUT_BITMAP_HELVETICA_18
+        font = glut.GLUT_BITMAP_TIMES_ROMAN_24
+
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        gluOrtho2D(self.res[0], self.res[2],
+                   self.res[3], self.res[1])
+
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        gl.glColor3f(1, 1, 1)
+
+        gl.glRasterPos2i(width, height + line_height)
+
+        for ch in string:
+            if ch == '\n':
+                height = height + line_height
+                gl.glRasterPos2i(width, height + line_height)
+            else:
+                glut.glutBitmapCharacter(font, ord(ch))
+
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPopMatrix()
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glPopMatrix()
